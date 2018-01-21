@@ -1,0 +1,510 @@
+#______________________________________________________________________________________________________
+# 
+# Made by Anthony : https://github.com/iamtonysoft/ragnarok-macros									   
+# Accepting Donations : https://www.paypal.me/iamtonysoft											   
+# AI Response Macro v1.3																				   	   
+#______________________________________________________________________________________________________
+#																									   		
+# Simple Guide: copy and paste this inside your control/eventMacros.txt								   
+#																									   	
+# Collection Of Macros
+# 1.) Fix teleport skill
+# 2.) Random body movements when sit/stand
+# 3.) Release response automacro
+# 4.) Respond to other players action 
+# 5.) PM Collections
+# 6.) GM Goodnight Sweetie (50/50 atleast you tried)			 	   
+#
+#   NOTICE : Reply with c = public chat, e = emotion 
+#			 Remove the # on variables $pubMessage and $pmCaseN after putting replies
+#		     Public  Message ex : $pubMessage = &random ("c thx","c wow thx")
+#		     Private Message ex : $pmCaseN = pm "$.lastpm" &random ("dont accuse me","bot my ass")
+#		     DO NOT JUST COPY AND PASTE! Construct your own answers and emotes  
+#______________________________________________________________________________________________________
+
+
+#___________________________________________________#
+# 										  			
+#	1. FIX TELEPORT SKILL     	  					
+#___________________________________________________#
+
+automacro FixTeleportSkill {
+	console /any work|Skill Teleport failed/
+	exclusive 1
+	run-once 1
+	call {
+		do warp cancel
+		release FixTeleportSkill
+	}
+	timeout 5
+}
+
+#______________________________________________________#
+# 										  			   
+#	2. RANDOM BODY MOVEMENTS WHEN SIT/STAND  		   
+#______________________________________________________#
+
+automacro RandomBodyMovements {
+	console /^You are sitting|^You are standing/i
+	exclusive 1
+	run-once 1
+	call {
+		do look @rand(0,7) @rand(0,2)
+		release RandomBodyMovements
+	}
+	timeout 5
+}
+
+#______________________________________________________#
+# 										  			   
+#	3. RELEASE RESPONSE AUTOMACRO's 	 		   
+#	   BY SETTING TIMEOUT IN SECONDS
+#______________________________________________________#
+
+automacro ReleaseResponse {
+	timeout 1800
+	exclusive 1
+	macro_delay 1
+	call {
+		# Player Actions
+		release SomeOneHealYou
+		release SomeOneBuffYou
+		release SomeOneHealYourMonster
+		release SomeOneBuffYourMonster
+		# PM Collections
+		release PM_SayHi
+		release	PM_SayAreYouBot
+		release	PM_SayHowAreYou
+		release	PM_SayPleaseRespond
+		release	PM_SayNumbers
+		release PM_ThrowRandomQuestion
+		release PM_SayWhatIsMyName
+		[
+			log ============= PLAYER ACTIONS =============|
+			log ***** [SomeOneHealYou] ---------- Released!
+			log ***** [SomeOneBuffYou] ---------- Released!
+			log ***** [SomeOneHealYourMonster]--- Released!
+			log ***** [SomeOneBuffYourMonster]--- Released!
+			log ============= PM COLLETIONS ==============|
+			log ***** [PM_SayHi] Released!------- Released!
+			log ***** [PM_SayAreYouBot] --------- Released!
+			log ***** [PM_SayHowAreYou] --------- Released!
+			log ***** [PM_SayPleaseRespond] ----- Released!
+			log ***** [PM_SayNumbers] ----------- Released!
+			log ***** [PM_ThrowRandomQuestion] -- Released!
+			log ***** [PM_SayWhatIsMyName] ------ Released!
+		]
+	}
+}
+
+#______________________________________________________#
+# 										  			   
+#	4. RESPOND TO OTHER PLAYERS ACTIONS		 		   
+#______________________________________________________#
+
+automacro SomeOneHealYou {
+	console /is casting Heal on you|uses Heal on you/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pubMessage = @random ("","")
+		
+		$positiveEmotes1 = @random ("e kis2","e ho","e lv","e lv2","e ic")
+		$positiveEmotes2 = @random ("e thx","e heh","e no1","e kis","e kis2")
+		$positiveEmotes3 = @random ("e e2","e e6","e e8","e e13","e e17")		
+		
+		log ***** [SomeOneHealYou] Say Thanks!
+		do move stop
+		do $pubMessage
+		do move stop
+		do $positiveEmotes2
+	}
+	timeout 20
+}
+
+automacro SomeOneBuffYou {
+	console /uses Blessing on you|uses Increase AGI on you|uses Assumptio on you/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pubMessage = @random ("","")
+		
+		$positiveEmotes1 = @random ("e kis2","e ho","e lv","e lv2","e ic")
+		$positiveEmotes2 = @random ("e thx","e heh","e no1","e kis","e kis2")
+		$positiveEmotes3 = @random ("e e2","e e6","e e8","e e13","e e17")
+		
+		log ***** [SomeOneBuffYou] Say Thanks!
+		do move stop
+		do $pubMessage
+		do move stop
+		do $positiveEmotes3
+	}
+	timeout 20
+}
+
+automacro SomeOneHealYourMonster {
+	console /is casting Heal on monster|uses Heal on monster/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pubMessage = @random ("","")
+		
+		# Negative emotion list
+		$negativeEmotes1 = @random ("e swt","e an","e ag","e ...","e wah","e e32")
+		$negativeEmotes2 = @random ("e swt2","e hmm","e omg","e sob","e pif","e e33")
+		$negativeEmotes3 = @random ("e e1","e e5","e e14","e e16","e e18")
+		$negativeEmotes4 = @random ("e e27","e e28","e e29","e e30","e e31")
+		
+		log ***** [SomeOneHealYourMonster] Get Angry!
+		do conf attackAuto -1
+		do move stop
+		do $pubMessage
+		do $negativeEmotes1
+		do move stop
+		do conf attackAuto 2
+	}
+	timeout 20
+}
+
+automacro SomeOneBuffYourMonster {
+	console /uses Blessing on monster|uses Increase AGI on monster|uses Assumptio on monster/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pubMessage = @random ("","")
+		
+		# Negative emotion list
+		$negativeEmotes1 = @random ("e swt","e an","e ag","e ...","e wah","e e32")
+		$negativeEmotes2 = @random ("e swt2","e hmm","e omg","e sob","e pif","e e33")
+		$negativeEmotes3 = @random ("e e1","e e5","e e14","e e16","e e18")
+		$negativeEmotes4 = @random ("e e27","e e28","e e29","e e30","e e31")
+		
+		log ***** [SomeOneBuffYourMonster] Get Angry!
+		do conf attackAuto -1
+		do move stop
+		do $pubMessage
+		do $negativeEmotes1
+		do move stop
+		do conf attackAuto 2
+	}
+	timeout 20
+}
+
+
+#______________________________________________________#
+# 										  			   
+#	5. PM COLLECTIONS   
+#______________________________________________________#
+
+automacro PM_SayHi {
+	pm /hi|hello|greeting|greetings/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		# $pmCase2 = pm "$.lastpm" @random ("","")
+		
+		log ***** [PM_SayHi] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /hi|hello/) {
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+			case (=~ /greeting|greetings/) {
+				do move stop
+				do $pmCase2
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_SayAreYouBot {
+	pm /bot|botter|botting/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		
+		$taunts = @random ("e e4","e gg","e e10","e e15","e e20")
+		
+		log ***** [PM_SayAreYouBot] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /bot|botter|botting/) {
+				log === [PM_SayAreYouBot] Reply with this idiot!
+				do move stop
+				do $pmCase1
+				do $taunts
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_SayHowAreYou {
+	pm /how are you/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		
+		log ***** [PM_SayHowAreYou] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /how are you|how are you today?/) {
+				log === [PM_SayHowAreYou] Send Reply!
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_SayPleaseRespond {
+	pm /seems like|you're in afk mode|afk|please respond/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		# $pmCase2 = pm "$.lastpm" @random ("","")
+		
+		log ***** [PM_SayPleaseRespond] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /please respond/) {
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+			case (=~ /seems like|seems like you're in afk|afk|seems like you're in afk mode/) {
+				do move stop
+				do $pmCase2
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_SayNumbers {
+	pm /10|[0-9]/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		
+		log ***** [PM_SayNumbers] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /10|[0-9]/) {
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_ThrowRandomQuestion {
+	pm /can you answer|question|questions/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# $pmCase1 = pm "$.lastpm" @random ("","")
+		
+		log ***** [PM_ThrowRandomQuestion] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /can you answer|question|questions/) {
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+automacro PM_SayWhatIsMyName { 
+	pm /what is my name/i
+	overrideAI 1
+	exclusive 1
+	macro_delay 2
+	run-once 1
+	call {
+		# Do Not Change
+		$pmCase1 = pm "$.lastpm" $.lastpm
+		
+		log ***** [PM_SayWhatIsMyName] Send Reply!
+		
+		switch ($.lastpmMsg) {
+			case (=~ /what is my name/) {
+				do move stop
+				do $pmCase1
+				do move stop
+			}
+		}
+	}
+	timeout 20
+}
+
+
+#______________________________________________________________________#
+# 										  			   				 
+#	6. GM GOODNIGHT SWEETIE (50/50 atleast you tried)		 		   
+#______________________________________________________________________#
+
+automacro GM_UseSandmanAndSleep {
+	console /uses Sandman on you|You are now: state: Sleep/
+	overrideAI 1
+	exclusive 1
+	macro_delay 3
+	call {
+		[
+			do conf attackAuto -1
+			do conf route_randomWalk 0
+		]
+		
+		# $pubMessage = @random ("","")
+		
+		$negativeEmotes1 = @random ("e swt","e an","e ag","e ...","e wah","e e32")
+		$negativeEmotes2 = @random ("e swt2","e hmm","e omg","e sob","e pif","e e33")
+		$negativeEmotes3 = @random ("e e1","e e5","e e14","e e16","e e18")
+		$negativeEmotes4 = @random ("e e27","e e28","e e29","e e30","e e31")
+		
+		log ***** [GM_UseSandmanAndSleep] You are in Danger!
+		
+		do $pubMessage
+		do move stop
+		do sit
+		do look @rand(0,7) @rand(0,2)
+		do $negativeEmotes2
+		do move stop
+		
+		$i = 0
+		while ($i < 10) as loop
+			do eval Utils::Win32::playSound ('C:\homer.wav')
+			log \Warning GM Detected!!!!
+			$i++
+		end loop
+		stop
+		
+		[
+			do conf attackAuto 2
+			do conf route_randomWalk 1
+		]
+	}
+	timeout 600
+}
+
+automacro GM_UseStatusRecovery {
+	console /is casting Status Recovery on you|You are no longer: state: Sleep/
+	overrideAI 1
+	exclusive 1
+	macro_delay 3
+	call {
+		[
+			do conf attackAuto -1
+			do conf route_randomWalk 0
+		]
+		
+		# $pubMessage = @random ("","")
+		
+		$negativeEmotes1 = @random ("e swt","e an","e ag","e ...","e wah","e e32")
+		$negativeEmotes2 = @random ("e swt2","e hmm","e omg","e sob","e pif","e e33")
+		$negativeEmotes3 = @random ("e e1","e e5","e e14","e e16","e e18")
+		$negativeEmotes4 = @random ("e e27","e e28","e e29","e e30","e e31")
+		
+		log ***** [GM_UseStatusRecovery] You are in Recovery Mode!
+		
+		do $pubMessage
+		do move stop
+		do sit
+		do look @rand(0,7) @rand(0,2)
+		do $negativeEmotes3
+		do move stop
+		
+		$i = 0
+		while ($i < 10) as loop
+			do eval Utils::Win32::playSound ('C:\homer.wav')
+			log \Warning GM Detected!!!!
+			$i++
+		end loop
+		stop
+		
+		[
+			do conf attackAuto 2
+			do conf route_randomWalk 1
+		]
+	}
+	timeout 600
+}
+
+automacro SentToJail {
+	console /^Cannot calculate a route from sec_pri/
+	overrideAI 1
+	exclusive 1
+	macro_delay 5
+	call {
+		[
+			do conf route_randomWalk 0
+			do conf lockMap none
+		]
+		
+		# $pubMessage = @random ("","")
+		
+		$negativeEmotes1 = @random ("e swt","e an","e ag","e ...","e wah","e e32")
+		$negativeEmotes2 = @random ("e swt2","e hmm","e omg","e sob","e pif","e e33")
+		$negativeEmotes3 = @random ("e e1","e e5","e e14","e e16","e e18")
+		$negativeEmotes4 = @random ("e e27","e e28","e e29","e e30","e e31")
+		
+		do ai manual
+		do move stop
+		
+		log ***** [SentToJail] RED ALERT DO AI OFF AND MANUAL REPLY!
+		
+		$i = 0
+		while ($i < 10) as loop
+			do eval Utils::Win32::playSound ('C:\homer.wav')
+			log \Warning You Are Sent to Prison!!!
+			$i++
+		end loop
+		stop
+		
+		do $pubMessage
+		do move stop
+		do sit
+		do look @rand(0,7) @rand(0,2)
+		do $negativeEmotes4
+		do move stop
+	}
+	timeout 600
+}
